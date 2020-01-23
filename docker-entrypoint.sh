@@ -29,6 +29,9 @@ DRUPAL_RUN_COMPOSER_INSTALL=${DRUPAL_RUN_COMPOSER_INSTALL:-true}
 APACHE_DOCUMENT_ROOT=${APACHE_DOCUMENT_ROOT:-"/var/www/html"}
 DRUPAL_PROJECT_ROOT=${DRUPAL_PROJECT_ROOT:-$APACHE_DOCUMENT_ROOT}
 
+# Cloud Run
+DRUPAL_CLOUD_RUN=${DRUPAL_DOWNLOAD_VERIFY_CERT:-false}
+
 # Allow users to override the docroot by setting an environment variable.
 if [ "$APACHE_DOCUMENT_ROOT" != "/var/www/html" ]; then
   sed -ri -e "s|\"/var/www/html\"|\"$APACHE_DOCUMENT_ROOT\"|g" /etc/apache2/sites-enabled/*.conf
@@ -84,6 +87,21 @@ EOF
   fi
 
   echo "Drupal codebase ready!"
+fi
+
+# check if drupal is installed to run post tasks
+if [ $DRUPAL_CLOUD_RUN = true ]; then
+  drush status bootstrap | grep -q Successful
+  DRUPAL_INSTALLED=$?
+  if [ "$DRUPAL_INSTALLED" == 0 ]
+  then
+    # drush updatedb -y
+    drush config-import --yes
+    drush cr
+    echo "Post scripts executed"
+  else
+    echo "Drupal not installed"
+  fi
 fi
 
 exec "$@"
