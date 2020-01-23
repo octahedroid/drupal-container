@@ -30,7 +30,7 @@ APACHE_DOCUMENT_ROOT=${APACHE_DOCUMENT_ROOT:-"/var/www/html"}
 DRUPAL_PROJECT_ROOT=${DRUPAL_PROJECT_ROOT:-$APACHE_DOCUMENT_ROOT}
 
 # Cloud Run
-DRUPAL_CLOUD_RUN=${DRUPAL_DOWNLOAD_VERIFY_CERT:-false}
+DRUPAL_CLOUD_RUN=${DRUPAL_CLOUD_RUN:-false}
 
 # Allow users to override the docroot by setting an environment variable.
 if [ "$APACHE_DOCUMENT_ROOT" != "/var/www/html" ]; then
