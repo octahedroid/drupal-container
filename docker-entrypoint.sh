@@ -96,7 +96,7 @@ if [ $DRUPAL_CLOUD_RUN = true ]; then
   if [ "$DRUPAL_INSTALLED" == 0 ]
   then
     # drush updatedb -y
-    drush config-import --yes
+    # drush config-import --yes
     drush cr
     echo "Post scripts executed"
   else
